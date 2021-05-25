@@ -23,7 +23,7 @@ function handler(req, res) {
       text
     }
 
-    status(200).json({message: 'Added comment', comment: newComment});
+    res.status(200).json({message: 'Added comment', comment: newComment});
   }
 
   if (req.method === 'GET') {
@@ -33,7 +33,7 @@ function handler(req, res) {
       { id: 'c3', name: 'Kripto', text: 'Hello world'}
     ];
 
-    status(200).json({ comments: dummyList});
+    res.status(200).json({ comments: dummyList});
   }
 }
 
