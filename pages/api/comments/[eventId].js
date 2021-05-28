@@ -3,10 +3,11 @@ import { MongoClient } from 'mongodb';
 async function handler(req, res) {
   const eventId = req.query.eventId;
 
+  const client = await MongoClient.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ejjn0.mongodb.net/events?retryWrites=true&w=majority`)
+
   if (req.method === 'POST') {
     const { email, name, text } = req.body;
 
-    const client = await MongoClient.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ejjn0.mongodb.net/events?retryWrites=true&w=majority`)
 
     if(!email.includes('@') ||
        !name ||
@@ -34,13 +35,11 @@ async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
-    const dummyList = [
-      { id: 'c1', name: 'Yiro', text: 'Hello world'},
-      { id: 'c2', name: 'Yujin', text: 'Hello world'},
-      { id: 'c3', name: 'Kripto', text: 'Hello world'}
-    ];
+    const db = client.db();
 
-    res.status(200).json({ comments: dummyList});
+    const documents = await db.collection('comments').find().sort({_id: -1}).toArray();
+
+    res.status(200).json({ comments: documents});
   }
 
 }
