@@ -1,9 +1,17 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 
-createContext({
+const NotificationContext = createContext({
   notification: null,
   showNotification: function() {},
   hideNotification: function() {}
 });
 
-export default notificationContext;
+export const NotificationContextProvider = (props) => {
+  return (
+    <NotificationContext.Provider>
+      {props.children}
+    </NotificationContext.Provider>
+  );
+}
+
+export default NotificationContext;
